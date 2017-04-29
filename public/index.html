@@ -50,7 +50,7 @@
                 <th>Picture</th>
                 <th>Name</th>
                 <th>Score (-5 to 5)</th>
-                <th>Price</th>
+                <th>Monthly Rent</th>
                 <th>Rating</th>
                 <th>Review Count</th>
                 <th>Distance (miles)</th>
@@ -62,7 +62,7 @@
                 <td><img ng-src="{{ result.image_url }}" style="width: 100px;"></td>
                 <td><a ng-href="{{ result.url }}">{{ result.name }}</a></td>
                 <td>{{ result.score | number:2 }}</td>
-                <td>{{ result.price }}</td>
+                <td>{{ result.rent | currency:$:0 }}</td>
                 <td>{{ result.rating }}</td>
                 <td>{{ result.review_count }}</td>
                 <td>{{ result.distance | number:2 }}</td>
