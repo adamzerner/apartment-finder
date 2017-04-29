@@ -1,14 +1,13 @@
 var express = require('express');
-var bodyParser = require('body-parser');
 var yelp = require('yelp-fusion');
 var config = require('./config.json');
+var utilities = require('./utilities.js');
 var app = express();
 
 var CLIENT_ID = config.client_id;
 var CLIENT_SECRET = config.client_secret;
 
 app.use(express.static('public'));
-app.use(bodyParser.json());
 
 app.get('/search', function (req, res) {
   var searchRequest = req.query;
@@ -16,12 +15,16 @@ app.get('/search', function (req, res) {
   yelp.accessToken(CLIENT_ID, CLIENT_SECRET).then(function (response) {
     var client = yelp.client(response.jsonBody.access_token);
 
-    client.search(searchRequest).then(function (response) {
-      var businesses = response.jsonBody.businesses;
-      res.json(businesses);
-    });
-  }).catch(function (err) {
-    console.error(err);
+    client
+      .search(searchRequest)
+      .then(function (response) {
+        var apartments = response.jsonBody.businesses;
+        utilities.getApartmentPrices(apartments, res);
+      })
+      .catch(function (err) {
+        console.error(err);
+      })
+    ;
   });
 });
 
