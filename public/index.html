@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="apartmentFinder">
+  <head>
+    <title>Apartment Finder</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script src="app.js"></script>
+    <script src="utilities.js"></script>
+  </head>
+  <body>
+    <section class="container">
+      <header class="page-header">
+        <h1>Apartment Finder</h1>
+      </header>
+
+      <section class="row" ng-controller="MainController as vm">
+        <!-- SEARCH -->
+        <section class="col-sm-3">
+          <form novalidate>
+            <div class="form-group">
+              <label>
+                Latitute: <input type="text" class="form-control" ng-model="vm.searchCriteria.latitude">
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>
+                Longitude: <input type="text" class="form-control" ng-model="vm.searchCriteria.longitude">
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>
+                Radius (miles): <input type="text" class="form-control" ng-model="vm.searchCriteria.radius">
+              </label>
+            </div>
+
+            <button class="btn btn-default" ng-click="vm.search(vm.searchCriteria)">Search</button>
+          </form>
+        </section>
+
+        <!-- RESULTS -->
+        <section class="col-sm-9">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Picture</th>
+                <th>Name</th>
+                <th>Score (-5 to 5)</th>
+                <th>Rating</th>
+                <th>Review Count</th>
+                <th>Distance (miles)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="result in vm.results">
+                <td>{{ $index + 1 }}</td>
+                <td><img ng-src="{{ result.image_url }}" style="width: 100px;"></td>
+                <td><a ng-href="{{ result.url }}">{{ result.name }}</a></td>
+                <td>{{ result.score | number:2 }}</td>
+                <td>{{ result.rating }}</td>
+                <td>{{ result.review_count }}</td>
+                <td>{{ result.distance | number:2 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+    </section>
+  </body>
+</html>
