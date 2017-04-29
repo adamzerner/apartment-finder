@@ -18,7 +18,7 @@ function getApartmentRentPrice(apartment) {
       return request(apartmentFinderDotComUrl);
     })
     .catch(function () {
-      console.error('Wrong apartmentfinder.com url.');
+      console.error(apartment.name + ': Wrong apartmentfinder.com url.');
       return null;
     })
     .then(function (apartmentFinderDotComHTML) {
@@ -27,12 +27,19 @@ function getApartmentRentPrice(apartment) {
       }
 
       var $ = cheerio.load(apartmentFinderDotComHTML);
-      var rent = $('.rent').first().text().trim();
-      rent = rent.split(' - ')[0]; // if it's a range, take lower end of range
-      rent = rent.slice(1); // remove $ from eg. '$800'
-      rent = rent.replace(',', ''); // remove ','
-      rent = Number(rent);
-      apartment.rent = rent;
+      var rent;
+
+      if ($('#floorplanTabContainer .rent').length) {
+        rent = $('#floorplanTabContainer .rent').first().text().trim();
+        rent = rent.split(' - ')[0]; // if it's a range, take lower end of range
+        rent = rent.slice(1); // remove $ from eg. '$800'
+        rent = rent.replace(',', ''); // remove ','
+        rent = Number(rent);
+        apartment.rent = rent;
+      } else {
+        console.error(apartment.name + ': couldn\'t find rent price on page.');
+      }
+
       return apartment;
     })
   ;
@@ -50,16 +57,15 @@ function getApartmentFinderDotComUrl(apartmentName) {
       return body[0].Address.BuildingName;
     })
     .catch(function () {
-      console.error('Error with apartmentfinder.com autocomplete.');
-      return apartmentName
-               .split(' ')
-               .map(function (str) {
-                 return str.charAt(0).toUpperCase() + str.slice(1);
-               })
-               .join('-')
-             ;
+      console.error(apartment.name + ': Error with apartmentfinder.com autocomplete.');
+      return apartmentName;
     })
     .then(function (name) {
+      name = name
+               .split(' ').join('-') // add dashes
+               .replace('-Apartments', '') // remove redundant "-Apartments"
+               .replace(/\./g, '') // remove dots
+             ;
       return 'http://www.apartmentfinder.com/Nevada/Las-Vegas-Apartments/' + name + '-Apartments';
     })
   ;
