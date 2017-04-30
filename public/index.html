@@ -3,11 +3,17 @@
   <head>
     <title>Apartment Finder</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
     <script src="app.js"></script>
     <script src="utilities.js"></script>
+    <style>
+      .glyphicon {
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <section class="container">
@@ -18,6 +24,10 @@
       <section class="row" ng-controller="MainController as vm">
         <!-- SEARCH -->
         <section class="col-sm-3">
+          <p>
+            <small>To get coordinates for the location you're interested in, go to <a ng-href="https://maps.google.com">Google Maps</a>, find your location, and then get the coordinates from the URL bar in your browser.</small>
+          </p>
+
           <form novalidate>
             <div class="form-group">
               <label>
@@ -49,10 +59,28 @@
                 <th>Rank</th>
                 <th>Picture</th>
                 <th>Name</th>
-                <th>Score (-5 to 5)</th>
-                <th>Monthly Rent</th>
-                <th>Rating</th>
-                <th>Review Count</th>
+                <th>
+                  Score
+                  <span
+                    class="glyphicon glyphicon-question-sign"
+                    data-toggle="popover"
+                    data-placement="bottom"
+                    data-container="body"
+                    data-content="Considers two factors:<br>1) Average Yelp review score (weighed by the number of reviews).<br>2) Distance from search location."
+                  ></span>
+                </th>
+                <th>
+                  Monthly Rent
+                  <span
+                    class="glyphicon glyphicon-question-sign"
+                    data-toggle="popover"
+                    data-placement="bottom"
+                    data-container="body"
+                    data-content="Refers to the cheapest monthly rent available. Ie. if a studio is $800, one-bedroom $900, and two-bedroom $1,000, the $800 price would be listed.<br><br>Prices are being scraped from apartmentfinder.com. Prices aren't able to be obtained for all apartments. This app is a proof of concept; it's possible that some prices are incorrect."
+                  ></span>
+                </th>
+                <th>Average Yelp Rating</th>
+                <th>Number of Reviews</th>
                 <th>Distance (miles)</th>
               </tr>
             </thead>

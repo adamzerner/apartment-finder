@@ -7,8 +7,8 @@ function MainController($http, Utilities) {
   var vm = this;
 
   vm.searchCriteria = {
-    latitude: '36.1340222',
-    longitude: '-115.1168598',
+    latitude: '',
+    longitude: '',
     radius: 15,
     categories: 'apartments',
     limit: 50,
@@ -35,3 +35,8 @@ function MainController($http, Utilities) {
     ;
   };
 }
+
+// opt in to bootstrap popover
+$(function () {
+  $('[data-toggle="popover"]').popover({ html: true });
+});
