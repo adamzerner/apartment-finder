@@ -1,11 +1,19 @@
 var express = require('express');
 var yelp = require('yelp-fusion');
-var config = require('./config.json');
 var utilities = require('./utilities.js');
 var app = express();
+var config;
+var YELP_CLIENT_ID;
+var YELP_CLIENT_SECRET;
 
-var YELP_CLIENT_ID = config.yelp.client_id;
-var YELP_CLIENT_SECRET = config.yelp.client_secret;
+if (process.env.NODE_ENV === 'development') {
+  config = require('./config.json');
+  YELP_CLIENT_ID = config.yelp.client_id;
+  YELP_CLIENT_SECRET = config.yelp.client_secret;
+} else if (process.env.NODE_ENV === 'production') {
+  YELP_CLIENT_ID = process.env.YELP_CLIENT_ID;
+  YELP_CLIENT_SECRET = process.env.YELP_CLIENT_SECRET;
+}
 
 app.use(express.static('public'));
 
@@ -28,6 +36,6 @@ app.get('/search', function (req, res) {
   ;
 });
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Listening on port 3000...');
 });

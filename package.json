@@ -9,6 +9,9 @@
   },
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "4.4.4",
+  },
   "dependencies": {
     "async": "^2.3.0",
     "async-promises": "^0.2.0",
